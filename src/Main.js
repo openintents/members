@@ -115,7 +115,7 @@ function MembershipPaymentField({ title, placeholder }) {
         );
         userSession
           .putFile(`membership/${memberID}`, signedToken, {
-            publicKey: memberID,
+            encrypt: false,
           })
           .then(url => {
             setMemberShipTokenUrl(url);

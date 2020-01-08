@@ -1,11 +1,11 @@
 {
-  "name": "REBL One",
-  "description": "A starter app using React with Blockstack",
+  "name": "Blockstack Legends",
+  "description": "A paid membership group page build with REBL stack",
   "icons": [
     {
-    "src": "android-chrome-192x192.png",
-    "sizes": "192x192",
-    "type": "image/png"
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ],
   "start_url": "./index.html",

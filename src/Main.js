@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
-import { useFile } from 'react-blockstack';
-
+import React, { useRef, useState } from 'react';
+import { useBlockstack } from 'react-blockstack';
+import { verifyReceipt } from './PaymentVerification';
+import { signProfileToken, decodeToken } from 'blockstack';
 const avatarFallbackImage =
   'https://s3.amazonaws.com/onename/avatar-placeholder.png';
 
@@ -25,18 +26,106 @@ function Profile({ person }) {
     </div>
   );
 }
-
-function NoteField({ title, path, placeholder }) {
-  const [note, setNote] = useFile(path);
+function PaymentReceivedField() {
   const textfield = useRef();
   const spinner = useRef();
-  const saveAction = () => {
+  const { userSession, userData } = useBlockstack();
+  const [paymentReceiptUrl, setPaymentReceiptUrl] = useState('');
+
+  const paymentReceivedAction = () => {
+    const memberID = textfield.current.value;
+    const token = signProfileToken(
+      {
+        memberID,
+        amount: 5.0,
+        unit: 'STX',
+      },
+      userData.appPrivateKey
+    );
+    userSession
+      .putFile(`payments/${memberID}`, token, { encrypt: false })
+      .then(url => setPaymentReceiptUrl(url));
+  };
+
+  return (
+    <div className="PaymentReceivedField input-group ">
+      <div className="input-group-prepend">
+        <span className="input-group-text">Payment received</span>
+      </div>
+      <input
+        type="text"
+        ref={textfield}
+        className="form-control"
+        defaultValue={''}
+        placeholder="Member ID"
+        onKeyUp={e => {
+          if (e.key === 'Enter') paymentReceivedAction();
+        }}
+      />
+      <div className="input-group-append">
+        <button
+          className="btn btn-outline-secondary"
+          type="button"
+          onClick={paymentReceivedAction}
+        >
+          <div
+            ref={spinner}
+            role="status"
+            className="d-none spinner-border spinner-border-sm text-info align-text-top mr-2"
+          />
+          Payment Received (in cash)
+        </button>
+      </div>
+      <div>{`${paymentReceiptUrl}`}</div>
+    </div>
+  );
+}
+
+function MembershipPaymentField({ title, placeholder }) {
+  const [memberShipTokenUrl, setMemberShipTokenUrl] = useState('');
+  const textfield = useRef();
+  const spinner = useRef();
+  const { userSession, userData } = useBlockstack();
+  const handlePaymentReceiptAction = () => {
     spinner.current.classList.remove('d-none');
-    setNote(textfield.current.value);
+    fetch(textfield.current.value)
+      .then(response => response.text())
+      .then(receiptContent => {
+        const receipt = decodeToken(receiptContent);
+        verifyReceipt(receipt);
+        const memberID = receipt.payload.claim.memberID;
+        const amount = receipt.payload.claim.amount;
+        const unit = receipt.payload.claim.unit;
+        if (unit !== 'STX') throw new Error('invalid unit ' + unit);
+        const issuedAt = new Date(receipt.payload.iat);
+        const expiresAt = new Date(
+          new Date().setTime(
+            issuedAt.getTime() + amount * 30 * 24 * 3600 * 1000
+          )
+        );
+        console.log({ expiresAt });
+        const signedToken = signProfileToken(
+          { member: true, group: 'Blockstack Legends' },
+          userData.appPrivateKey,
+          memberID,
+          undefined,
+          'ES256K',
+          new Date(),
+          expiresAt
+        );
+        userSession
+          .putFile(`membership/${memberID}`, signedToken, {
+            publicKey: memberID,
+          })
+          .then(url => {
+            setMemberShipTokenUrl(url);
+            spinner.current.classList.add('d-none');
+          });
+      });
     setTimeout(() => spinner.current.classList.add('d-none'), 1500);
   };
   return (
-    <div className="NoteField input-group ">
+    <div className="MembershipPaymentField input-group ">
       <div className="input-group-prepend">
         <span className="input-group-text">{title}</span>
       </div>
@@ -44,28 +133,27 @@ function NoteField({ title, path, placeholder }) {
         type="text"
         ref={textfield}
         className="form-control"
-        disabled={note === undefined}
-        defaultValue={note || ''}
+        defaultValue={''}
         placeholder={placeholder}
         onKeyUp={e => {
-          if (e.key === 'Enter') saveAction();
+          if (e.key === 'Enter') handlePaymentReceiptAction();
         }}
       />
       <div className="input-group-append">
         <button
           className="btn btn-outline-secondary"
           type="button"
-          disabled={!setNote}
-          onClick={saveAction}
+          onClick={handlePaymentReceiptAction}
         >
           <div
             ref={spinner}
             role="status"
             className="d-none spinner-border spinner-border-sm text-info align-text-top mr-2"
           />
-          Save
+          Handle Payment Receipt
         </button>
       </div>
+      <div>{`${memberShipTokenUrl}`}</div>
     </div>
   );
 }
@@ -79,32 +167,16 @@ export default function Main({ person }) {
         </div>
       </div>
       <div className="lead row mt-5">
+        <div className="mx-auto col col-sm-10 col-md-8 px-4">1.</div>
         <div className="mx-auto col col-sm-10 col-md-8 px-4">
-          <NoteField title="Note" path="note" placeholder="to yourself..." />
+          <PaymentReceivedField />
         </div>
-
-        <div className="card col col-sm-10 col-md-8 mx-auto mt-5 text-center px-0 border-warning">
-          <div className="card-header">
-            <h5 className="card-title">Instructions</h5>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Type any text in the field above.</li>
-            <li class="list-group-item">
-              Press the <i>Enter</i> key or click the <i>Save</i> button to
-              store the note.
-            </li>
-            <li class="list-group-item">
-              Reload the page to confirm that the text is retained.
-            </li>
-          </ul>
-        </div>
-        <div className="alert alert-warning text-center col col-sm-10 col-md-8 mt-3 mx-auto px-5">
-          <h5>Next Step</h5>
-          <p>
-            Log out to get back to the Landing page where you can deploy your
-            own clone of&nbsp;this&nbsp;app as a starting point for your own
-            Blockstack apps.
-          </p>
+        <div className="mx-auto col col-sm-10 col-md-8 px-4">2.</div>
+        <div className="mx-auto col col-sm-10 col-md-8 px-4">
+          <MembershipPaymentField
+            title="Payment receipt url"
+            placeholder="https://gaia..."
+          />
         </div>
       </div>
     </main>

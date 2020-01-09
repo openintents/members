@@ -14,7 +14,7 @@
 [[headers]]
   for = "/index.html"
   [headers.values]
-    can't-be-evil = true
+    "can't-be-evil" = true
 
 [[headers]]
   for = "/manifest.json"

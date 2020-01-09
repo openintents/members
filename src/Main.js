@@ -106,7 +106,8 @@ function MembershipPaymentField({ title, placeholder }) {
     fetch(textfield.current.value)
       .then(response => response.text())
       .then(receiptContent => {
-        const appPublicKey = getPublicKeyFromPrivate(userData.appPrivateKey);
+        const appPublicKey =
+          '023055040a2662b9cbd62ef7062afc12e7283a32a6ab4a2b1ab2e8c9e33ce43ccb';
         var receipt;
         try {
           receipt = verifyProfileToken(receiptContent, appPublicKey);
@@ -115,7 +116,7 @@ function MembershipPaymentField({ title, placeholder }) {
           spinner.current.classList.add('d-none');
           return;
         }
-        const memberID = receipt.payload.claim.memberID;
+        const memberID = receipt.payload.claim.member;
         const amount = receipt.payload.claim.amount;
         const unit = receipt.payload.claim.unit;
         if (unit !== 'STX') {

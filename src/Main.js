@@ -40,7 +40,7 @@ function PaymentReceivedField() {
     const payerID = textfield.current.value;
     const token = signProfileToken(
       {
-        member: payerID,
+        payer: payerID,
         amount: 5.0,
         unit: 'STX',
       },
@@ -116,7 +116,7 @@ function MembershipPaymentField({ title, placeholder }) {
           spinner.current.classList.add('d-none');
           return;
         }
-        const memberID = receipt.payload.claim.member;
+        const memberID = receipt.payload.claim.payer;
         const amount = receipt.payload.claim.amount;
         const unit = receipt.payload.claim.unit;
         if (unit !== 'STX') {

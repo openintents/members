@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useBlockstack } from 'react-blockstack';
-import { verifyReceipt } from './PaymentVerification';
-import { signProfileToken, decodeToken } from 'blockstack';
+import {
+  signProfileToken,
+  verifyProfileToken,
+  getPublicKeyFromPrivate,
+} from 'blockstack';
 const avatarFallbackImage =
   'https://s3.amazonaws.com/onename/avatar-placeholder.png';
 
@@ -27,37 +30,41 @@ function Profile({ person }) {
   );
 }
 function PaymentReceivedField() {
+  const { userSession, userData } = useBlockstack();
   const textfield = useRef();
   const spinner = useRef();
-  const { userSession, userData } = useBlockstack();
-  const [paymentReceiptUrl, setPaymentReceiptUrl] = useState('');
+  const [payment, setPayment] = useState();
 
   const paymentReceivedAction = () => {
-    const memberID = textfield.current.value;
+    spinner.current.classList.remove('d-none');
+    const payerID = textfield.current.value;
     const token = signProfileToken(
       {
-        memberID,
+        member: payerID,
         amount: 5.0,
         unit: 'STX',
       },
       userData.appPrivateKey
     );
     userSession
-      .putFile(`payments/${memberID}`, token, { encrypt: false })
-      .then(url => setPaymentReceiptUrl(url));
+      .putFile(`payments/${payerID}`, token, { encrypt: false })
+      .then(receiptUrl => {
+        setPayment({ receiptUrl, payerID });
+        spinner.current.classList.add('d-none');
+      });
   };
 
   return (
     <div className="PaymentReceivedField input-group ">
       <div className="input-group-prepend">
-        <span className="input-group-text">Payment received</span>
+        <span className="input-group-text">Payer</span>
       </div>
       <input
         type="text"
         ref={textfield}
         className="form-control"
         defaultValue={''}
-        placeholder="Member ID"
+        placeholder="Blockstack ID"
         onKeyUp={e => {
           if (e.key === 'Enter') paymentReceivedAction();
         }}
@@ -76,34 +83,50 @@ function PaymentReceivedField() {
           Payment Received (in cash)
         </button>
       </div>
-      <div>{`${paymentReceiptUrl}`}</div>
+      <div>
+        {payment && (
+          <>
+            <a href={`${payment.receiptUrl}`}>{`${payment.receiptUrl}`}</a>
+            <div>5 STX received from {payment.payer}</div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
 function MembershipPaymentField({ title, placeholder }) {
-  const [memberShipTokenUrl, setMemberShipTokenUrl] = useState('');
+  const { userSession, userData } = useBlockstack();
   const textfield = useRef();
   const spinner = useRef();
-  const { userSession, userData } = useBlockstack();
+  const [memberShip, setMemberShip] = useState();
+  const [error, setError] = useState();
   const handlePaymentReceiptAction = () => {
     spinner.current.classList.remove('d-none');
     fetch(textfield.current.value)
       .then(response => response.text())
       .then(receiptContent => {
-        const receipt = decodeToken(receiptContent);
-        verifyReceipt(receipt);
+        const appPublicKey = getPublicKeyFromPrivate(userData.appPrivateKey);
+        var receipt;
+        try {
+          receipt = verifyProfileToken(receiptContent, appPublicKey);
+        } catch (e) {
+          setError(e);
+          spinner.current.classList.add('d-none');
+          return;
+        }
         const memberID = receipt.payload.claim.memberID;
         const amount = receipt.payload.claim.amount;
         const unit = receipt.payload.claim.unit;
-        if (unit !== 'STX') throw new Error('invalid unit ' + unit);
-        const issuedAt = new Date(receipt.payload.iat);
-        const expiresAt = new Date(
-          new Date().setTime(
-            issuedAt.getTime() + amount * 30 * 24 * 3600 * 1000
-          )
+        if (unit !== 'STX') {
+          setError(new Error('invalid unit ' + unit));
+          spinner.current.classList.add('d-none');
+          return;
+        }
+        const iat = new Date(receipt.payload.iat);
+        const exp = new Date(
+          new Date().setTime(iat.getTime() + amount * 30 * 24 * 3600 * 1000)
         );
-        console.log({ expiresAt });
         const signedToken = signProfileToken(
           { member: true, group: 'Blockstack Legends' },
           userData.appPrivateKey,
@@ -111,18 +134,17 @@ function MembershipPaymentField({ title, placeholder }) {
           undefined,
           'ES256K',
           new Date(),
-          expiresAt
+          exp
         );
         userSession
           .putFile(`membership/${memberID}`, signedToken, {
             encrypt: false,
           })
-          .then(url => {
-            setMemberShipTokenUrl(url);
+          .then(tokenUrl => {
+            setMemberShip({ tokenUrl, exp });
             spinner.current.classList.add('d-none');
           });
       });
-    setTimeout(() => spinner.current.classList.add('d-none'), 1500);
   };
   return (
     <div className="MembershipPaymentField input-group ">
@@ -153,7 +175,15 @@ function MembershipPaymentField({ title, placeholder }) {
           Handle Payment Receipt
         </button>
       </div>
-      <div>{`${memberShipTokenUrl}`}</div>
+      <div>
+        {memberShip && (
+          <>
+            <a href={`${memberShip.tokenUrl}`}>{`${memberShip.tokenUrl}`}</a>
+            <div>Membership expires at {memberShip.exp.toString()}</div>
+          </>
+        )}
+        {error && <div>{error.toString()}</div>}
+      </div>
     </div>
   );
 }
@@ -167,11 +197,9 @@ export default function Main({ person }) {
         </div>
       </div>
       <div className="lead row mt-5">
-        <div className="mx-auto col col-sm-10 col-md-8 px-4">1.</div>
         <div className="mx-auto col col-sm-10 col-md-8 px-4">
           <PaymentReceivedField />
         </div>
-        <div className="mx-auto col col-sm-10 col-md-8 px-4">2.</div>
         <div className="mx-auto col col-sm-10 col-md-8 px-4">
           <MembershipPaymentField
             title="Payment receipt url"

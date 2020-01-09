@@ -1,8 +1,8 @@
 {
-  "name": "hello-blockstack",
-  "version": "0.0.0",
-  "description": "A simple Blockstack app using ReactJS",
-  "author": "",
+  "name": "blockstack-legends",
+  "version": "0.0.1",
+  "description": "A paid membership group",
+  "author": "Friedger Müffke",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@
   "description": "A paid membership group page build with REBL stack",
   "icons": [
     {
-      "src": "android-chrome-192x192.png",
+      "src": "https://members.friedger.de/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     }

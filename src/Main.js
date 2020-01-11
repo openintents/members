@@ -1,10 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useBlockstack } from 'react-blockstack';
-import {
-  signProfileToken,
-  verifyProfileToken,
-  getPublicKeyFromPrivate,
-} from 'blockstack';
+import { signProfileToken, verifyProfileToken } from 'blockstack';
 const avatarFallbackImage =
   'https://s3.amazonaws.com/onename/avatar-placeholder.png';
 
@@ -38,18 +34,16 @@ function PaymentReceivedField() {
   const paymentReceivedAction = () => {
     spinner.current.classList.remove('d-none');
     const payerID = textfield.current.value;
-    const token = signProfileToken(
-      {
-        payer: payerID,
-        amount: 5.0,
-        unit: 'STX',
-      },
-      userData.appPrivateKey
-    );
+    const paymentDetails = {
+      payer: payerID,
+      amount: 5.0,
+      unit: 'STX',
+    };
+    const token = signProfileToken(paymentDetails, userData.appPrivateKey);
     userSession
       .putFile(`payments/${payerID}`, token, { encrypt: false })
       .then(receiptUrl => {
-        setPayment({ receiptUrl, payerID });
+        setPayment({ receiptUrl, paymentDetails });
         spinner.current.classList.add('d-none');
       });
   };
@@ -87,7 +81,10 @@ function PaymentReceivedField() {
         {payment && (
           <>
             <a href={`${payment.receiptUrl}`}>{`${payment.receiptUrl}`}</a>
-            <div>5 STX received from {payment.payer}</div>
+            <div>
+              {payment.paymentDetails.amount} {payment.paymentDetails.unit}{' '}
+              received from {payment.paymentDetails.payer}
+            </div>
           </>
         )}
       </div>

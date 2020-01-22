@@ -134,7 +134,6 @@ export default function Main({ userData, person, userSession }) {
             <button
               onClick={() => {
                 setMyClub(null);
-                window.location.href = window.location.origin;
               }}
             >
               Visit Blockstack Legends

@@ -14,12 +14,16 @@
     "react-blockstack": "^0.6.4",
     "react-blockstack-button": "^0.1.0",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.0",
+    "react-stripe-elements": "^6.0.1",
+    "stripe": "^8.4.0"
   },
   "prettier": "@blockstack/prettier-config",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "lambda-serve": "netlify-lambda serve lambda-src",
+    "lambda-build": "netlify-lambda build lambda-src",
+    "start": "concurrently \"react-scripts start\" \"npm run lambda-serve\"",
+    "build": "react-scripts build && yarn run lambda-build",
     "test": "react-scripts build",
     "eject": "react-scripts eject"
   },
@@ -39,10 +43,12 @@
     ]
   },
   "devDependencies": {
+    "@blockstack/prettier-config": "0.0.4",
     "bootstrap": "^4.3.1",
+    "concurrently": "^5.0.2",
+    "netlify-lambda": "^1.6.3",
     "prettier": "^1.19.1",
     "react-scripts": "^3.1.1",
-    "react-test-renderer": "^16.8.6",
-    "@blockstack/prettier-config": "0.0.4"
+    "react-test-renderer": "^16.8.6"
   }
 }

@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <title>Blockstack Legends</title>
+    <meta charset="utf-8" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#2b5797" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <title>Membership</title>
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
     <nav class="navbar sticky-top navbar-dark bg-dark text-light">
-      <a class="navbar-brand" href="https://blockstack.org" href="#">
-        <img src="white-logo.svg" alt="Logo">
+      <a class="navbar-brand" href="https://members.friedger.de" href="#">
+        <img src="img/banner.png" alt="Logo" />
       </a>
-      <div id="Auth" class="ml-auto">
-      </div>
+      <div id="Auth" class="ml-auto"></div>
     </nav>
-    <a href="https://github.com/friedger/starter-app/tree/feature/membership">
-      <img width="149" height="149" style="position: absolute; right: 0; z-index: 1; "
-           src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149"
-           class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+    <a href="https://github.com/friedger/members">
+      <img
+        width="149"
+        height="149"
+        style="position: absolute; right: 0; z-index: 1; "
+        src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149"
+        class="attachment-full size-full"
+        alt="Fork me on GitHub"
+        data-recalc-dims="1"
+      />
     </a>
     <noscript>
       You need to enable JavaScript to use this Blockstack app.
@@ -26,11 +39,22 @@
     <div id="App" class="h-100"></div>
 
     <footer class="bg-dark text-white text-center w-80 mb-0 p-5">
-      <p>REBL One is free
-        with <a href="https://github.com/REBL-Stack/starter-app" target="_blank" rel="noopener noreferrer">Open
-        Source</a> available on github.
-      </p>
-      <p>Initial development is funded by an award from Blockstack&nbsp;PBC.</p>
+      <p>
+        members.friedger.de is built by
+        <a
+          href="http://openintents.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          >OpenIntents</a
+        >
+        using
+        <a
+          href="https://github.com/REBL-Stack/starter-app"
+          target="_blank"
+          rel="noopener noreferrer"
+          >REBL-Stack</a
+        >
+        available on github.
       </p>
     </footer>
   </body>

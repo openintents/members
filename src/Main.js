@@ -37,6 +37,7 @@ function Profile({ person }) {
 
 export default function Main({ userData, person, userSession }) {
   const [myClub, setMyClub] = useFile(FILE_MY_CLUB);
+  console.log({ myClub });
   const clubPublicKey = myClub || appPublicKey;
   const clubName = myClub ? person.name() + ' Club' : 'Blockstack Legends';
   const isBlockstackLegends = clubPublicKey === appPublicKey;
@@ -94,7 +95,7 @@ export default function Main({ userData, person, userSession }) {
           </div>
         )}
         <div className="mx-auto col col-sm-10 col-md-8 px-4 mt-4 mb-4">
-          <MembershipCard clubPublicKey={clubPublicKey} />
+          <MembershipCard clubPublicKey={clubPublicKey} usersCard={card} />
         </div>
         {isAdmin && (
           <div className="mx-auto col col-sm-10 col-md-8 px-4">
@@ -122,7 +123,6 @@ export default function Main({ userData, person, userSession }) {
             <button
               onClick={() => {
                 setMyClub(getPublicKeyFromPrivate(userData.appPrivateKey));
-                window.location.href = window.location.origin;
               }}
             >
               Visit your own Club!

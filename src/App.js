@@ -6,7 +6,6 @@ import Landing from './Landing.js';
 import { StripeProvider } from 'react-stripe-elements';
 
 export default function App(props) {
-  console.log(window.location, props);
   const { userData, person, signIn, userSession } = useBlockstack();
   console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
   return (

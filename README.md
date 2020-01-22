@@ -6,7 +6,7 @@ This is an web app showcasing paid subscriptions using Blockstack together with 
 
 This web app is membership site for `Blockstack Legends`. `Blockstack Legends` is a club of app users who pay a monthly subscription fee to access premium features of apps.
 
-After logging in, users can make a payment via credit card (currently, test payments only. Use one of Strip's testing cards for testing) and will received the location of their membership card.
+After logging in, users can make a payment via credit card (currently, test payments only. Use one of Strip's [testing cards](https://stripe.com/docs/testing#cards) for testing) and will received the location of their membership card.
 
 Alternatively, they can go to an administrator of `Blockstack Legends` and pay by cash. In this case the admin creates a payment receipt for the cash payment by entering their Blockstack username. The user can go to another admin and show the payment receipt. The admin enters the location of the payment reciept in the web app. If that payment receipt is valid a membership card is created and the admin is will show the location of the membership card to the user.
 

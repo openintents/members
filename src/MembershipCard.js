@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFile } from 'react-blockstack';
 import { verifyProfileToken } from 'blockstack';
 import { FILE_MEMBERSHIPS } from './Main';
@@ -25,7 +25,7 @@ export function fetchCard(url, clubPublicKey) {
     });
 }
 
-export const MembershipCard = ({ clubPublicKey }) => {
+export const MembershipCard = ({ clubPublicKey, usersCard }) => {
   const [cards, setCards] = useFile(FILE_MEMBERSHIPS);
   const textfield = useRef();
   const spinner = useRef();
@@ -38,6 +38,10 @@ export const MembershipCard = ({ clubPublicKey }) => {
     allCards[clubPublicKey] = clubCards;
     setCards(JSON.stringify(allCards));
   };
+
+  useEffect(() => {
+    setCard(usersCard);
+  }, [usersCard]);
 
   const addMembershipCard = () => {
     spinner.current.classList.remove('d-none');

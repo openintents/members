@@ -25,7 +25,7 @@ export function fetchCard(url, clubPublicKey) {
     });
 }
 
-export const MembershipCard = ({ clubPublicKey, usersCard }) => {
+export const MembershipCard = ({ clubPublicKey }) => {
   const [cards, setCards] = useFile(FILE_MEMBERSHIPS);
   const textfield = useRef();
   const spinner = useRef();

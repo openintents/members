@@ -94,10 +94,7 @@ export default function Main({ userData, person, userSession }) {
           </div>
         )}
         <div className="mx-auto col col-sm-10 col-md-8 px-4 mt-4 mb-4">
-          <MembershipCard
-            clubPublicKey={getPublicKeyFromPrivate(userData.appPrivateKey)}
-            usersCard={card}
-          />
+          <MembershipCard clubPublicKey={clubPublicKey} />
         </div>
         {isAdmin && (
           <div className="mx-auto col col-sm-10 col-md-8 px-4">

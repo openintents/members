@@ -5,7 +5,8 @@
 
 [[redirects]]
   from = "/*"
-  to = "/index.html 200"
+  to = "/index.html"
+  status = 200
 
 [[redirects]]
   from = "/media/*"

@@ -15,6 +15,7 @@ function PaymentRequestField() {
 class CheckoutForm extends React.Component {
   state = {};
   componentDidMount() {
+    console.log({ env: process.env });
     fetch(process.env.REACT_APP_LAMBDA_ENDPOINT, {
       headers: {
         Accept: 'application/json',
@@ -25,6 +26,7 @@ class CheckoutForm extends React.Component {
     })
       .then(r => r.json())
       .then(response => {
+        console.log(response);
         this.setState({ clientSecret: response.clientSecret });
       });
   }

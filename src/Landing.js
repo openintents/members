@@ -31,7 +31,7 @@ export default class Landing extends Component {
                 project providing a proof of concept with the purpose of showing
                 how to implement
                 <strong>
-                  paid subscriptions using
+                  paid subscriptions using{' '}
                   <a
                     href="https://blockstack.org"
                     target="_blank"

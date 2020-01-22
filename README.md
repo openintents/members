@@ -55,6 +55,8 @@ Membership cards and payment receipts are signed JSON web tokens. The app privat
 
 ## Demo video of the Proof of Concept
 
+[Demo video without sound](https://youtu.be/QyD1WLWCD7E)
+
 ## Development
 
 First run:

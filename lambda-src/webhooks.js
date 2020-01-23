@@ -12,13 +12,15 @@ const headers = {
 };
 
 exports.handler = async (event, context) => {
-  if (event.type === 'payment_intent.succeeded') {
-    const paymentIntent = event.data.object;
-    const metadata = paymentIntent.metadata;
-    const memberID = metadata.memberID;
-    const amount = paymentIntent.amount / 100;
-    const iat = new Date(paymentIntent.created);
+  try {
+    const body = JSON.parse(event.body);
 
+    const paymentIntent = body.object;
+    const metadata = paymentIntent.metadata;
+    const memberID = metadata.username;
+    const amount = paymentIntent.amount / 100;
+    const iat = new Date(paymentIntent.created * 1000);
+    console.log(iat, paymentIntent.created);
     const { signedToken } = await utils.createMembershipCard(
       memberID,
       'Blockstack Legends',
@@ -31,22 +33,22 @@ exports.handler = async (event, context) => {
       'https://hub.blockstack.org',
       clubPrivateKey
     );
-    const membershipUrl = blockstack.uploadToGaiaHub(
+    const membershipUrl = await blockstack.uploadToGaiaHub(
       `membership/${memberID}`,
       signedToken,
       gaiaConfig,
-      'application/json'
+      'text/plain'
     );
     return {
       statusCode,
       headers,
       body: `{membershipUrl:"${membershipUrl}"}`,
     };
-  } else {
+  } catch (e) {
     return {
       statusCode,
       headers,
-      body: '',
+      body: `${e.toString()}`,
     };
   }
 };

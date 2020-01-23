@@ -9,12 +9,27 @@ const headers = {
 };
 
 exports.handler = async (event, context) => {
-  //-- We only care to do anything if this is our POST request.
+  let body;
+  if (event.isBase64Encoded) {
+    body = new Buffer(event.body, 'base64').toString();
+  } else {
+    body = event.body;
+  }
+  try {
+    body = JSON.parse(body);
+  } catch (e) {
+    console.log(e.toString());
+    return {
+      statusCode,
+      headers,
+      body: JSON.stringify({}),
+    };
+  }
   const paymentIntent = await stripe.paymentIntents.create({
     amount: 100,
     currency: 'eur',
     metadata: {
-      username: event.username,
+      username: body.username,
     },
   });
 

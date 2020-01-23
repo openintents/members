@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
   try {
     const body = JSON.parse(event.body);
 
-    const paymentIntent = body.object;
+    const paymentIntent = body.data.object;
     const metadata = paymentIntent.metadata;
     const memberID = metadata.username;
     const amount = paymentIntent.amount / 100;
@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode,
       headers,
-      body: `${e.toString()} in ${body}`,
+      body: `${e.toString()} in ${event.body}`,
     };
   }
 };

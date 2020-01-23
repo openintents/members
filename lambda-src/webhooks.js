@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode,
       headers,
-      body: `${e.toString()}`,
+      body: `${e.toString()} in ${body}`,
     };
   }
 };

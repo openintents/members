@@ -39,7 +39,7 @@ In the next phase for the club, the received funds should be re-distributed to a
 
 Currently, clubs are identified by an owner address. In the future, clubs can be identified by Blockstack usernames.
 
-Club members will receive a club membership number on their card.
+Club members will receive a club membership number on their card without creating a centralized user database.
 
 In the future, clubs can have more than one adminstrator.
 

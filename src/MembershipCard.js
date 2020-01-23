@@ -30,6 +30,7 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
   const textfield = useRef();
   const spinner = useRef();
   const [card, setCard] = useState();
+  const [error, setError] = useState();
 
   const storeCard = membershipCardUrl => {
     const allCards = JSON.parse(cards) || {};
@@ -52,13 +53,17 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
         if (newCard) {
           setCard(newCard);
           storeCard(membershipCardUrl);
+          setError(undefined);
           spinner.current.classList.add('d-none');
         } else {
+          setError('Invalid card');
           spinner.current.classList.add('d-none');
         }
       })
       .catch(e => {
         console.log(e);
+        setError(e.toString());
+        spinner.current.classList.add('d-none');
       });
   };
 
@@ -72,6 +77,7 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
           </>
         )}
         {!card && <>Enter the location of your membership card</>}
+        {error && <>Error: {error}</>}
       </div>
 
       <div className="MembershipCard input-group ">

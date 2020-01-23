@@ -4,15 +4,17 @@ This is an web app showcasing paid subscriptions using Blockstack together with 
 
 ## Description
 
-This web app is membership site for `Blockstack Legends`. `Blockstack Legends` is a club of app users who pay a monthly subscription fee to access premium features of apps.
+This web app is the membership site for `Blockstack Legends`. `Blockstack Legends` is a club of app users who pay a monthly subscription fee to access premium features of apps.
 
-After logging in, users can make a payment via credit card (currently, test payments only. Use one of Strip's [testing cards](https://stripe.com/docs/testing#cards) for testing) and will received the location of their membership card.
+After logging in, users can make a payment via credit card (currently, test payments only; use one of Strip's [testing cards](https://stripe.com/docs/testing#cards) for testing) and will received the location of their membership card as a web url.
 
-Alternatively, they can go to an administrator of `Blockstack Legends` and pay by cash. In this case the admin creates a payment receipt for the cash payment by entering their Blockstack username. The user can go to another admin and show the payment receipt. The admin enters the location of the payment reciept in the web app. If that payment receipt is valid a membership card is created and the admin is will show the location of the membership card to the user.
+Alternatively, they can go to an administrator of `Blockstack Legends` and pay by cash. In this case the admin creates a payment receipt for the cash payment by entering their Blockstack username. Again this is a web url. The user can go to another admin and show the payment receipt. The admin enters the location of the payment reciept in the web app. If that payment receipt is valid then a membership card is created and the admin is will show the location of the membership card (web url) to the user.
 
-Members of `Blockstack Legends` can enter the location of their membership card in the web app. If it is valid the expiration time of the membership is shown.
+Members of `Blockstack Legends` can enter the location of their membership card in the web app. If it is valid then the expiration time of the membership is shown.
 
-Users of the app can start also their own club immediately by clicking on `Visit your club`. They are immediately administrator of the club and can accept cash and issue membership cards.
+Once the user has retrieved the membership card, the admin can savely delete their version. In the current version, this is not yet implemented
+
+Users of the app can start also their own club immediately by clicking on `Visit your club`. They are the administrator of the club and can accept cash and issue membership cards.
 
 Possible use cases that can be built on top of this project are for example
 
@@ -27,11 +29,11 @@ Note, that the site or site owner does not control or know which 3rd parties acc
 
 ### Security & Privacy
 
-In the proof of concept, membership cards are stored unencrypted and the location can be guessed by third-parties. This is to simplify demonstration of the flow of data. In the next steps memberships card will be encrypted and the location will be randomized.
+In the proof of concept, membership cards are stored unencrypted and the location can be guessed by third-parties. This is to simplify demonstration of the data flow. In the next steps memberships card will be encrypted and the location will be randomized.
 
 ### Blockstack Legends
 
-In the next steps for the club, the received funds should be re-distributed to app developers for proposed work. The work proposal are presented to the members of Blockstack Legends and voted on using their membership cards.
+In the next phase for the club, the received funds should be re-distributed to app developers for proposed work. The work proposal are presented to the members of Blockstack Legends and voted on using their membership cards.
 
 ## Use of Blockstack technology
 
@@ -52,6 +54,14 @@ Payment receipts for cash payments are stored on the gaia storage of the admin o
 ### Signed JWT
 
 Membership cards and payment receipts are signed JSON web tokens. The app private key of the user is used to sign the tokens. The methods `signProfileToken` and `verifyProfileToken` are used.
+
+### BNS (in the future)
+
+The Club is uniquely identified by the address derived from the private key. Admins of a club could assign a Blockstack username to the club and make the identifier human friendly.
+
+### Atlas (in the future)
+
+Club members could receive a club membership number on their card. As there is no centralized user database. The club would publish their last used number on the Atlas network and derive a new club membership number from the current value.
 
 ## Demo video of the Proof of Concept
 

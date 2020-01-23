@@ -35,6 +35,14 @@ In the proof of concept, membership cards are stored unencrypted and the locatio
 
 In the next phase for the club, the received funds should be re-distributed to app developers for proposed work. The work proposal are presented to the members of Blockstack Legends and voted on using their membership cards.
 
+### Club Platform
+
+Currently, clubs are identified by an owner address. In the future, clubs can be identified by Blockstack usernames.
+
+Club members will receive a club membership number on their card.
+
+In the future, clubs can have more than one adminstrator.
+
 ## Use of Blockstack technology
 
 ### Blockstack Auth
@@ -62,6 +70,10 @@ The Club is uniquely identified by the address derived from the private key. Adm
 ### Atlas (in the future)
 
 Club members could receive a club membership number on their card. As there is no centralized user database. The club would publish their last used number on the Atlas network and derive a new club membership number from the current value.
+
+### Smart contracts (in the future)
+
+Blockstack Legends could use a smart contract to handle worker proposals in the future. Clubs in general could use a smart contract to manage rules about who is administrator of a club.
 
 ## Demo video of the Proof of Concept
 

@@ -78,6 +78,9 @@ class CheckoutForm extends React.Component {
     const membershipCardUrl = `https://gaia.blockstack.org/hub/14WtxuuA2nRJNiXuknwz4QmKJUZHvTNG8z/membership/${username}`;
     return (
       <>
+        {!clientSecret && (
+          <>Stripe not yet initialized... maybe refresh the page</>
+        )}
         {(!paymentIntent || paymentIntent.status !== 'succeeded') && (
           <form onSubmit={this.handleSubmit} className="text-center mt-3 mb-3">
             <PaymentRequestField />

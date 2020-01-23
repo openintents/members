@@ -84,7 +84,7 @@ export default function Main({ userData, person, userSession }) {
       </div>
 
       <div className="lead row mt-5">
-        {isBlockstackLegends && (
+        {isBlockstackLegends && userData && (
           <div className="mx-auto col col-sm-10 col-md-8 px-4">
             <Elements>
               <InjectedStripeForm

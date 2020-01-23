@@ -33,13 +33,15 @@ In the proof of concept, membership cards are stored unencrypted and the locatio
 
 ### Blockstack Legends
 
-In the next phase for the club, the received funds should be re-distributed to app developers for proposed work. The work proposal are presented to the members of Blockstack Legends and voted on using their membership cards.
+In the next phase for the club, real money will be accepted. The received funds will be re-distributed to app developers for proposed work. The work proposal will be presented to the members of Blockstack Legends and voted on using their membership cards.
 
 ### Club Platform
 
 Currently, clubs are identified by an owner address. In the future, clubs can be identified by Blockstack usernames.
 
-Club members will receive a club membership number on their card without creating a centralized user database.
+Club members should be able to pay with various payment providers. The Web Payment Request API will be used.
+
+Members will receive a club membership number on their card without creating a centralized user database.
 
 In the future, clubs can have more than one adminstrator.
 

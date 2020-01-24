@@ -109,6 +109,13 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
           </button>
         </div>
       </div>
+      <div>
+        You can use your card also at the demo app{' '}
+        <a href="https://nervous-davinci-5f67db.netlify.com/">
+          https://nervous-davinci-5f67db.netlify.com/
+        </a>
+        . It will give you access to "premium" features.
+      </div>
     </>
   );
 };

@@ -78,6 +78,7 @@ class CheckoutForm extends React.Component {
     const membershipCardUrl = `https://gaia.blockstack.org/hub/14WtxuuA2nRJNiXuknwz4QmKJUZHvTNG8z/membership/${username}`;
     return (
       <>
+        <b>Use Stripe's testing cards only!</b>
         {!clientSecret && (
           <>Stripe not yet initialized... maybe refresh the page</>
         )}

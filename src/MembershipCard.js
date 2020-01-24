@@ -31,9 +31,15 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
   const spinner = useRef();
   const [card, setCard] = useState();
   const [error, setError] = useState();
+  const [membershipCardUrl, setMembershipCardUrl] = useState();
 
   const storeCard = membershipCardUrl => {
-    const allCards = JSON.parse(cards) || {};
+    var allCards;
+    if (cards) {
+      allCards = JSON.parse(cards);
+    } else {
+      allCards = {};
+    }
     var clubCards = allCards[clubPublicKey] || [];
     clubCards = [membershipCardUrl];
     allCards[clubPublicKey] = clubCards;
@@ -43,6 +49,14 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
   useEffect(() => {
     setCard(usersCard);
   }, [usersCard]);
+
+  useEffect(() => {
+    if (cards) {
+      const allCards = JSON.parse(cards) || {};
+      var clubCards = allCards[clubPublicKey] || [];
+      setMembershipCardUrl(clubCards);
+    }
+  }, [cards, clubPublicKey]);
 
   const addMembershipCard = () => {
     spinner.current.classList.remove('d-none');
@@ -88,7 +102,7 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
           type="text"
           ref={textfield}
           className="form-control"
-          defaultValue={''}
+          defaultValue={membershipCardUrl || ''}
           placeholder="https://"
           onKeyUp={e => {
             if (e.key === 'Enter') addMembershipCard();
@@ -110,11 +124,13 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
         </div>
       </div>
       <div>
-        You can use your membership card also at the demo app{' '}
-        <a href="https://nervous-davinci-5f67db.netlify.com/">
-          https://nervous-davinci-5f67db.netlify.com/
-        </a>
-        . It will give you access to "premium" features.
+        <small>
+          You can use your membership card also at the demo app{' '}
+          <a href="https://nervous-davinci-5f67db.netlify.com/">
+            https://nervous-davinci-5f67db.netlify.com/
+          </a>
+          . It will give you access to "premium" features.
+        </small>
       </div>
     </>
   );

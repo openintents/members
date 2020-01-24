@@ -110,7 +110,7 @@ export const MembershipCard = ({ clubPublicKey, usersCard }) => {
         </div>
       </div>
       <div>
-        You can use your card also at the demo app{' '}
+        You can use your membership card also at the demo app{' '}
         <a href="https://nervous-davinci-5f67db.netlify.com/">
           https://nervous-davinci-5f67db.netlify.com/
         </a>

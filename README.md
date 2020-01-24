@@ -25,6 +25,8 @@ Note, that the site or site owner does not control or know which 3rd parties acc
 
 **This is the first Blockstack app that allows Blockstack users to pay for a subscription and take full control of it.**
 
+**Apps accepting membership cards can fully respect their data and privacy.** Only apps accepting credit cards usually depend on payment processors that might be evil.
+
 ## Road Map
 
 ### Security & Privacy

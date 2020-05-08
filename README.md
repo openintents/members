@@ -1,31 +1,33 @@
-# Members - A paid subscription that works across sites without centralized membership database
+# Members - A paid subscription that works across sites without a centralized membership database
 
-This is an web app showcasing paid subscriptions using Blockstack together with JWTs accepting credit cards via stripe or cash payments.
+This is an web app showcasing paid subscriptions using Blockstack together with JWTs to accept credit cards via stripe or cash payments.
+
+To access the web app, go to: https://members.friedger.de/
 
 ## Description
 
 This web app is the membership site for `Blockstack Legends`. `Blockstack Legends` is a club of app users who pay a monthly subscription fee to access premium features of apps.
 
-After logging in, users can make a payment via credit card (currently, test payments only; use one of Strip's [testing cards](https://stripe.com/docs/testing#cards) for testing) and will received the location of their membership card as a web url.
+After logging in, users can make a payment via credit card (currently, test payments only; use one of Stripe's [testing cards](https://stripe.com/docs/testing#cards) for testing) and will received the location of their membership card as a web url.
 
 Alternatively, they can go to an administrator of `Blockstack Legends` and pay by cash. In this case the admin creates a payment receipt for the cash payment by entering their Blockstack username. Again this is a web url. The user can go to another admin and show the payment receipt. The admin enters the location of the payment reciept in the web app. If that payment receipt is valid then a membership card is created and the admin is will show the location of the membership card (web url) to the user.
 
 Members of `Blockstack Legends` can enter the location of their membership card in the web app. If it is valid then the expiration time of the membership is shown.
 
-Once the user has retrieved the membership card, the admin can savely delete their version. In the current version, this is not yet implemented
+Once the user has retrieved the membership card, the admin can safely delete their version. In the current version, this is not yet implemented.
 
-Users of the app can start also their own club immediately by clicking on `Visit your club`. They are the administrator of the club and can accept cash and issue membership cards.
+Users of the app can start also their own club immediately by clicking on `Visit your own Club!`. They are the administrator of the club and can accept cash and issue membership cards.
 
-Possible use cases that can be built on top of this project are for example
+Possible use cases that can be built on top of this project are:
 
-- Museeum passes for publicly funded museeums where a museum is in control whether the pass is accepted for a special exhibition.
+- Museum passes for publicly funded museums where a museum is in control whether the pass is accepted for a special exhibition.
 - Youth hostel memberships where shops nearby a hostel are in control whether they give a special discount to members.
 
-Note, that the site or site owner does not control or know which 3rd parties accept a certain type of membership cards. Furthermore, members of the club are in control to whom they reveal their membership of `Blockstack Legends` because only they can proof that they are the owner of their membership card.
+Note, that the site or site owner does not control or know which 3rd parties accept a certain type of membership cards. Furthermore, members of the club are in control to whom they reveal their membership of `Blockstack Legends` because only they can prove that they are the owner of their membership card.
 
 **This is the first Blockstack app that allows Blockstack users to pay for a subscription and take full control of it.**
 
-**Apps accepting membership cards can fully respect their data and privacy.** Only apps accepting credit cards usually depend on payment processors that might be evil.
+**Apps accepting membership cards can fully respect the users' data and privacy.** Apps currently accepting credit cards usually depend on payment processors that might be evil.
 
 ## Road Map
 
@@ -59,7 +61,7 @@ Not your keys, not your club!
 
 ### Gaia Storage
 
-Membership cards are stored on the gaia storage of the admin of a club. Once, the member has retrieved the club card this data can be removed.
+Membership cards are stored on the gaia storage of the admin of a club. Once the member has retrieved the club card this data can be removed.
 
 Payment receipts for cash payments are stored on the gaia storage of the admin of a club. These receipts can be used by admins to create membership cards.
 
@@ -93,7 +95,8 @@ In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.<br>
+Runs the app in the development mode.
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 A development server for netlify functions is started concurrently.

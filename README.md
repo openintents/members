@@ -1,6 +1,6 @@
 # Members - A paid subscription that works across sites without a centralized membership database
 
-This is an web app showcasing paid subscriptions using Blockstack together with JWTs to accept credit cards via stripe or cash payments.
+This is an web app showcasing paid subscriptions using Blockstack together with JSON web tokens (JWTs) to accept credit cards via stripe or cash payments.
 
 To access the web app, go to: https://members.friedger.de/
 

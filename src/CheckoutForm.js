@@ -1,5 +1,7 @@
 import React from 'react';
 import { injectStripe, CardElement } from 'react-stripe-elements';
+import { FILE_MEMBERSHIPS } from './Main';
+import { getFile, putFile } from 'blockstack';
 
 function PaymentRequestField() {
   return (
@@ -13,7 +15,11 @@ function PaymentRequestField() {
 }
 
 class CheckoutForm extends React.Component {
-  state = {};
+  state = {
+    error: undefined,
+    clientSecret: undefined,
+    paymentIntent: undefined,
+  };
   componentDidMount() {
     console.log({ env: process.env });
     fetch(process.env.REACT_APP_LAMBDA_ENDPOINT, {
@@ -42,8 +48,32 @@ class CheckoutForm extends React.Component {
   orderComplete = clientSecret => {
     this.props.stripe.retrievePaymentIntent(clientSecret).then(result => {
       var paymentIntent = result.paymentIntent;
+      if (paymentIntent.status === 'succeeded') {
+        const username = this.props.username;
+        this.storeMembershipCard(
+          `https://gaia.blockstack.org/hub/14WtxuuA2nRJNiXuknwz4QmKJUZHvTNG8z/membership/${username}`
+        );
+      }
       this.setState({ error: undefined, paymentIntent });
     });
+  };
+
+  storeMembershipCard = async membershipCardUrl => {
+    var allCards = {};
+    try {
+      const cards = await getFile(FILE_MEMBERSHIPS);
+      if (cards) {
+        allCards = JSON.parse(cards);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    const { clubPublicKey } = this.props;
+    var clubCards = allCards[clubPublicKey] || [];
+    clubCards = [membershipCardUrl];
+    allCards[clubPublicKey] = clubCards;
+    await putFile(FILE_MEMBERSHIPS, JSON.stringify(allCards));
+    console.log('Membership card added.');
   };
 
   handleSubmit = ev => {

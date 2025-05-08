@@ -14,7 +14,7 @@
     "react-blockstack": "^0.6.4",
     "react-blockstack-button": "^0.1.0",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^7.5.2",
     "react-stripe-elements": "^6.0.1",
     "stripe": "^8.4.0"
   },
